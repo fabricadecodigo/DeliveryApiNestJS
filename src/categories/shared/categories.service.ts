@@ -17,8 +17,8 @@ export class CategoriesService {
     }
 
     async create(category: Category) {
-        const createdCaategory = new this.categoryModel(category);
-        return await createdCaategory.save();
+        const createdCategory = new this.categoryModel(category);
+        return await createdCategory.save();
     }
 
     async update(id: string, category: Category) {
