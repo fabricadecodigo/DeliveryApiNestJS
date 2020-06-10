@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BusinessHoursModule } from './business-hours/business-hours.module';
+import { CardapioModule } from './cardapio/cardapio.module';
 import { CategoryModule } from './categories/category.module';
 import { DeliveryModule } from './delivery/delivery.module';
 
@@ -13,6 +14,7 @@ import { DeliveryModule } from './delivery/delivery.module';
     CategoryModule,
     DeliveryModule,
     BusinessHoursModule,
+    CardapioModule
   ],
   controllers: [
     AppController
