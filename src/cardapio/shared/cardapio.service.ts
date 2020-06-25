@@ -8,7 +8,7 @@ export class CardapioService {
     constructor(@InjectModel('Cardapio') private readonly cardapioModel: Model<Cardapio>) { }
 
     async getAll() {
-        return await this.cardapioModel.find().exec();
+        return await this.cardapioModel.find().populate('category').exec();
     }
 
     async getById(id: string) {

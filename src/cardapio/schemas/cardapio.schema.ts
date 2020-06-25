@@ -1,7 +1,10 @@
 import * as mongoose from 'mongoose';
 
 export const CardapioSchema = new mongoose.Schema({
-    category: mongoose.Types.ObjectId,
+    category: {
+        type: mongoose.Types.ObjectId,
+        ref: 'Categories'
+    },
     name: String,
     price: Number,
     description: String
