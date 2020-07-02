@@ -5,4 +5,5 @@ export class Cardapio extends Document {
     name: string;
     price: number;
     description: string;
+    photoUrl: string;
 }

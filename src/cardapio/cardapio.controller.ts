@@ -1,10 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import { Cardapio } from './shared/cardapio';
 import { CardapioService } from './shared/cardapio.service';
+import { fileFilter } from './shared/file-filter';
+import { filenameGenerator } from './shared/filename-generator';
 
 @Controller('cardapio')
 export class CardapioController {
-    
+
     constructor(
         private cardapioService: CardapioService
     ) { }
@@ -20,13 +24,27 @@ export class CardapioController {
     }
 
     @Post()
-    async create(@Body() cardapio: Cardapio) {
-        return await this.cardapioService.create(cardapio);
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: './uploads',
+            filename: filenameGenerator
+        }),
+        fileFilter: fileFilter,
+    }))
+    async create(@Body() cardapio: Cardapio, @UploadedFile() file: Express.Multer.File) {
+        return await this.cardapioService.create(cardapio, file);
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() cardapio: Cardapio) {
-        return this.cardapioService.update(id, cardapio);
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: './uploads',
+            filename: filenameGenerator
+        }),
+        fileFilter: fileFilter,
+    }))
+    async update(@Param('id') id: string, @Body() cardapio: Cardapio, @UploadedFile() file: Express.Multer.File) {
+        return this.cardapioService.update(id, cardapio, file);
     }
 
     @Delete(':id')

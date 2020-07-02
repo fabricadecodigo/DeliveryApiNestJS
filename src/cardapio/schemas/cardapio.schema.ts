@@ -7,7 +7,8 @@ export const CardapioSchema = new mongoose.Schema({
     },
     name: String,
     price: Number,
-    description: String
+    description: String,
+    photoUrl: String
 },
 {
     collection: 'products'
