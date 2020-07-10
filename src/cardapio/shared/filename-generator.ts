@@ -4,7 +4,22 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const filenameGenerator = (req: Request, file: Express.Multer.File, callback: (error: Error | null, filename: string) => void) => {
     try {
-        const fileExtName = extname(file.originalname);
+        let fileExtName = extname(file.originalname);
+        if (!fileExtName) {
+            switch (file.mimetype) {
+                case 'image/png':
+                    fileExtName = '.png';
+                    break;
+                case 'image/jpeg':
+                    fileExtName = '.jpg';
+                    break;
+                case 'image/gif':
+                    fileExtName = '.gif';
+                    break;
+                default:
+                    break;
+            }
+        }
         const randomName = uuidv4();
         callback(null, `${randomName}${fileExtName}`);
     } catch (error) {
