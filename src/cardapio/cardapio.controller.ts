@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors, Req } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Cardapio } from './shared/cardapio';
 import { CardapioService } from './shared/cardapio.service';
 import { fileFilter } from './shared/file-filter';
 import { filenameGenerator } from './shared/filename-generator';
+import { Request } from 'express';
 
 @Controller('cardapio')
 export class CardapioController {
@@ -14,8 +15,8 @@ export class CardapioController {
     ) { }
 
     @Get()
-    async getAll() {
-        return await this.cardapioService.getAll();
+    async getAll(@Req() req: Request) {        
+        return await this.cardapioService.getAll(req.query);
     }
 
     @Get(':id')

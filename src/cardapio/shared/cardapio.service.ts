@@ -9,8 +9,15 @@ import { Cardapio } from './cardapio';
 export class CardapioService {
     constructor(@InjectModel('Cardapio') private readonly cardapioModel: Model<Cardapio> ) { }
 
-    async getAll() {
-        return await this.cardapioModel.find().populate('category').exec();
+    async getAll(query: any) {
+        const hasFilterByName = query.name ? true : false;
+        const filter = { }
+        if (hasFilterByName) {
+            // https://docs.mongodb.com/manual/reference/operator/query/regex/
+            filter['name'] = { $regex: '.*' + query.name + '.*', $options: 'i' }
+        }
+
+        return await this.cardapioModel.find(filter).populate('category').exec();
     }
 
     async getById(id: string) {
