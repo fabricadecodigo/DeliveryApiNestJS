@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { JwtAdminAuthGuard } from './../auth/shared/admin/jwt-admin-auth.guard';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { BusinessHour } from './shared/business-hour';
 import { BusinessHourService } from './shared/business-hour.service';
 
+@UseGuards(JwtAdminAuthGuard)
 @Controller('businesshours')
 export class BusinessHoursController {
 

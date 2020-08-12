@@ -1,7 +1,9 @@
-import { Controller, Get, Param, Body, Post, Put, Delete } from '@nestjs/common';
+import { JwtAdminAuthGuard } from './../auth/shared/admin/jwt-admin-auth.guard';
+import { Controller, Get, Param, Body, Post, Put, Delete, UseGuards } from '@nestjs/common';
 import { Category } from './shared/category';
 import { CategoriesService } from './shared/categories.service';
 
+@UseGuards(JwtAdminAuthGuard)
 @Controller('categories')
 export class CategoriesController {
 

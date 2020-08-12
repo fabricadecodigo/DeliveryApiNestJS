@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { JwtAdminAuthGuard } from './../auth/shared/admin/jwt-admin-auth.guard';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Delivery } from './shared/delivery';
 import { DeliveryService } from './shared/delivery.service';
 
+@UseGuards(JwtAdminAuthGuard)
 @Controller('delivery')
 export class DeliveryController {
     constructor(

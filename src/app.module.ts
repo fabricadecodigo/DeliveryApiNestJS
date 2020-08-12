@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { BusinessHoursModule } from './business-hours/business-hours.module';
 import { CardapioModule } from './cardapio/cardapio.module';
 import { CategoryModule } from './categories/category.module';
 import { DeliveryModule } from './delivery/delivery.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -19,7 +21,9 @@ import { join } from 'path';
     CategoryModule,
     DeliveryModule,
     BusinessHoursModule,
-    CardapioModule
+    CardapioModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [
     AppController

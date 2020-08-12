@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors, Req } from '@nestjs/common';
+import { JwtAdminAuthGuard } from './../auth/shared/admin/jwt-admin-auth.guard';
+import { JwtCustomerAuthGuard } from './../auth/shared/customer/jwt-customer-auth.guard';
+import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors, Req, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { Cardapio } from './shared/cardapio';
@@ -19,11 +21,13 @@ export class CardapioController {
         return await this.cardapioService.getAll(req.query);
     }
 
+    @UseGuards(JwtCustomerAuthGuard)
     @Get(':id')
     async getById(@Param('id') id: string) {
         return await this.cardapioService.getById(id);
     }
 
+    @UseGuards(JwtAdminAuthGuard)
     @Post()
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
@@ -36,6 +40,7 @@ export class CardapioController {
         return await this.cardapioService.create(cardapio, file);
     }
 
+    @UseGuards(JwtAdminAuthGuard)
     @Put(':id')
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
@@ -48,6 +53,7 @@ export class CardapioController {
         return this.cardapioService.update(id, cardapio, file);
     }
 
+    @UseGuards(JwtAdminAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: string) {
         return await this.cardapioService.delete(id);
