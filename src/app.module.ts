@@ -9,6 +9,7 @@ import { BusinessHoursModule } from './business-hours/business-hours.module';
 import { CardapioModule } from './cardapio/cardapio.module';
 import { CategoryModule } from './categories/category.module';
 import { DeliveryModule } from './delivery/delivery.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -24,6 +25,7 @@ import { UsersModule } from './users/users.module';
     CardapioModule,
     UsersModule,
     AuthModule,
+    RestaurantModule,
   ],
   controllers: [
     AppController
