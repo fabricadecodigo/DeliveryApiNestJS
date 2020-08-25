@@ -2,6 +2,7 @@ export interface IUserRequest {
     name: string;
     email: string;
     password: string;
+    phone: string;
     address: {
         cep: string;
         stret: string;

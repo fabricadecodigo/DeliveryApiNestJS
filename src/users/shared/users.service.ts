@@ -19,7 +19,7 @@ export class UsersService {
 
     async getById(id: string) {
         return await this.userModel.findById(id)
-            .select('name email type')
+            .select('name email type phone')
             .exec();
     }
 
@@ -33,6 +33,7 @@ export class UsersService {
             name: user.name,
             email: user.email,
             password: user.password,
+            phone: user.phone,
             type: UserTypeEnum.admin
         })
     }
@@ -42,6 +43,7 @@ export class UsersService {
             name: user.name,
             email: user.email,
             password: user.password,
+            phone: user.phone,
             type: UserTypeEnum.customer
         });
         // se criou o usuário e tem endereço
@@ -58,11 +60,11 @@ export class UsersService {
         if (result.length > 0) {
             throw new Error('O email informado já está sendo usado.')
         }
-        let { name, email, password, type } = userModel;
+        let { name, email, password, phone, type } = userModel;
         // encriptar a senha
         password = await this.cryptService.crypt(password);
 
-        const createdUser = new this.userModel({ name, email, password, type });
+        const createdUser = new this.userModel({ name, email, password, phone, type });
         return await createdUser.save();
     }
 
