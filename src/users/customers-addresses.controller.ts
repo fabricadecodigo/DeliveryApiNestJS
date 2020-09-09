@@ -13,7 +13,6 @@ export class CustomersAddressesController {
 
     @Get()
     async getAllByUser(@Request() req: any): Promise<Address[]> {
-        console.log(req.user);
         return this.addressService.getAllByUser(req.user.sub);
     }
  }
