@@ -1,3 +1,4 @@
+import { OrdersModule } from './orders/orders.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthModule,
     RestaurantModule,
+    OrdersModule,
   ],
   controllers: [
     AppController
