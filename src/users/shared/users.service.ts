@@ -70,12 +70,15 @@ export class UsersService {
 
     async update(id: string, user: IUpdateUserRequest) {
         const userEntity = await this.getById(id);
-        // não vou alterar a senha do usuário nesse método
-        const { name, email } = user;
-        userEntity.name = name;
-        userEntity.email = email;
+        userEntity.name = user.name;
+        userEntity.phone = user.phone;
 
         await this.userModel.updateOne({ _id: id }, userEntity).exec();
+        // se tem endereço
+        if (user.address) {
+            const { cep, street, number, complement, neighborhood } = user.address;
+            await this.addressService.save(userEntity._id, cep, street, number, complement, neighborhood);
+        }
 
         return userEntity;
     }

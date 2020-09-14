@@ -1,6 +1,5 @@
 export interface IUpdateUserRequest {
     name: string;
-    email: string;
     phone: string;
     address: {
         cep: string;
@@ -8,6 +7,5 @@ export interface IUpdateUserRequest {
         number: string;
         complement: string;
         neighborhood: string;
-        city: string;
     }
 }
