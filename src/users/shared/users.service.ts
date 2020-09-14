@@ -2,9 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CryptService } from './../../shared/services/crypt.service';
-import { Address } from './address';
+import { AddressService } from './address.service';
+import { ICreateUserRequest } from './icreate-user.request';
+import { IUpdateUserRequest } from './iupdate-user.request';
 import { IUserModel } from './iuser.model';
-import { IUserRequest } from './iuser.request';
 import { User } from './user';
 import { UserTypeEnum } from './user.type.enum';
 
@@ -13,7 +14,7 @@ export class UsersService {
 
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
-        @InjectModel('Address') private readonly addressModel: Model<Address>,
+        private readonly addressService: AddressService,
         private cryptService: CryptService
     ) { }
 
@@ -28,7 +29,7 @@ export class UsersService {
             .exec();
     }
 
-    async createUser(user: IUserRequest) {
+    async createUser(user: ICreateUserRequest) {
         return this.create({
             name: user.name,
             email: user.email,
@@ -38,7 +39,7 @@ export class UsersService {
         })
     }
 
-    async createCustomer(user: IUserRequest) {
+    async createCustomer(user: ICreateUserRequest) {
         const createdUser = await this.create({
             name: user.name,
             email: user.email,
@@ -48,9 +49,8 @@ export class UsersService {
         });
         // se criou o usuário e tem endereço
         if (createdUser && user.address) {
-            const { cep, stret, number, complement, neighborhood, city } = user.address;
-            const address = new this.addressModel({ user: createdUser._id, cep, stret, number, complement, neighborhood, city });
-            await address.save();
+            const { cep, street, number, complement, neighborhood } = user.address;
+            await this.addressService.save(createdUser._id, cep, street, number, complement, neighborhood);
         }
         return createdUser;
     }
@@ -68,7 +68,7 @@ export class UsersService {
         return await createdUser.save();
     }
 
-    async update(id: string, user: IUserRequest) {
+    async update(id: string, user: IUpdateUserRequest) {
         const userEntity = await this.getById(id);
         // não vou alterar a senha do usuário nesse método
         const { name, email } = user;

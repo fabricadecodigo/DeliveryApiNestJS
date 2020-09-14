@@ -1,8 +1,9 @@
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtCustomerAuthGuard } from './../auth/shared/customer/jwt-customer-auth.guard';
-import { IUserRequest } from './shared/iuser.request';
-import { UsersService } from './shared/users.service';
-import { Controller, Get, Post, Put, Param, Body, UseGuards } from '@nestjs/common';
+import { IUpdateUserRequest } from './shared/iupdate-user.request';
+import { ICreateUserRequest } from './shared/icreate-user.request';
 import { User } from './shared/user';
+import { UsersService } from './shared/users.service';
 
 @Controller('customers')
 export class CustomersController {
@@ -18,13 +19,13 @@ export class CustomersController {
     }
 
     @Post()
-    async create(@Body() user: IUserRequest): Promise<User> {
+    async create(@Body() user: ICreateUserRequest): Promise<User> {
         return this.usersService.createCustomer(user);
     }
 
     @UseGuards(JwtCustomerAuthGuard)
     @Put(':id')
-    async update(@Param('id') id: string, @Body() user: IUserRequest): Promise<User> {
+    async update(@Param('id') id: string, @Body() user: IUpdateUserRequest): Promise<User> {
         return this.usersService.update(id, user);
     }
  }

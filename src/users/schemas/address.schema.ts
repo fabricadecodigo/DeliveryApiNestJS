@@ -6,7 +6,7 @@ export const AddressSchema = new mongoose.Schema({
         ref: 'User'
     },
     cep: String,
-    stret: String,
+    street: String,
     number: String,
     complement: String,
     neighborhood: String,
