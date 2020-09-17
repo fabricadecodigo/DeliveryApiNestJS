@@ -1,3 +1,4 @@
+import { OrdersAmountStatusController } from './orders-amount-status.controller';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './../users/users.module';
@@ -15,7 +16,8 @@ import { OrdersService } from './shared/orders.service';
     ],
     controllers: [
         OrdersController,
-        CustomersOrdersController
+        CustomersOrdersController,
+        OrdersAmountStatusController
     ],
     providers: [
         OrdersService,

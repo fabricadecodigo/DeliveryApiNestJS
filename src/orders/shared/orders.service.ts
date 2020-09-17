@@ -1,10 +1,11 @@
-import { OrderStatusEnum } from './order-status.enum';
-import { IOrderRequest } from './iorder-request';
-import { UsersService } from './../../users/shared/users.service';
-import { Order } from './order';
-import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UsersService } from './../../users/shared/users.service';
+import { IOrderAmountByStatusResponse } from './iorder-amout-by-status.response';
+import { IOrderRequest } from './iorder-request';
+import { Order } from './order';
+import { OrderStatusEnum } from './order-status.enum';
 
 @Injectable()
 export class OrdersService {
@@ -70,5 +71,32 @@ export class OrdersService {
 
     async updateStatus(id: string, newStatus: OrderStatusEnum) {
         return await this.orderModel.findByIdAndUpdate(id, { status: newStatus }, { new: true });
+    }
+
+    async getOrdersAmountByStatus() {
+        const today = new Date();
+
+        let tomorrow = new Date(today.valueOf());
+        tomorrow.setDate(tomorrow.getUTCDate() + 1);
+
+        let yesterday = new Date(today.valueOf());
+        yesterday.setDate(yesterday.getUTCDate() - 1);
+        
+        const openOrdersQuery = this.getAllOpenCloseQuery(true);
+        const closeOrdersQuery = this.getAllOpenCloseQuery(false);
+
+        const amountCreated = await openOrdersQuery.find({ status: OrderStatusEnum.created }).exec();
+        const amountConfirmed = await openOrdersQuery.find({ status: OrderStatusEnum.confirmed }).exec();
+        const amountAvailableToDelivery = await openOrdersQuery.find({ status: OrderStatusEnum.availableToDelivery }).exec();
+        const amountFinished = await closeOrdersQuery.where('date').gt(yesterday).lt(tomorrow).exec();
+
+        const result: IOrderAmountByStatusResponse = {
+            amountCreated: amountCreated.length,
+            amountConfirmed: amountConfirmed.length,
+            amountAvailableToDelivery: amountAvailableToDelivery.length,
+            amountFinished: amountFinished.length
+        }
+
+        return result;
     }
 }
