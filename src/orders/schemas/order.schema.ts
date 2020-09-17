@@ -14,7 +14,7 @@ export const OrderSchema = new mongoose.Schema({
         phone: String,
     },
     address: {
-        stret: String,
+        street: String,
         number: String,
         complement: String,
         neighborhood: String,

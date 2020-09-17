@@ -1,8 +1,9 @@
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAdminAuthGuard } from './../auth/shared/admin/jwt-admin-auth.guard';
-import { IUserRequest } from './shared/iuser.request';
-import { UsersService } from './shared/users.service';
-import { Controller, Get, Post, Put, Param, Body, UseGuards } from '@nestjs/common';
+import { IUpdateUserRequest } from './shared/iupdate-user.request';
+import { ICreateUserRequest } from './shared/icreate-user.request';
 import { User } from './shared/user';
+import { UsersService } from './shared/users.service';
 
 @UseGuards(JwtAdminAuthGuard)
 @Controller('users')
@@ -18,12 +19,12 @@ export class UsersController {
     }
 
     @Post()
-    async create(@Body() user: IUserRequest): Promise<User> {
+    async create(@Body() user: ICreateUserRequest): Promise<User> {
         return this.usersService.createUser(user);
     }
 
     @Put(':id')
-    async update(@Param('id') id: string, @Body() user: IUserRequest): Promise<User> {
+    async update(@Param('id') id: string, @Body() user: IUpdateUserRequest): Promise<User> {
         return this.usersService.update(id, user);
     }
 }

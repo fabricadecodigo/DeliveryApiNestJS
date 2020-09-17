@@ -1,14 +1,11 @@
-export interface IUserRequest {
+export interface IUpdateUserRequest {
     name: string;
-    email: string;
-    password: string;
     phone: string;
     address: {
         cep: string;
-        stret: string;
+        street: string;
         number: string;
         complement: string;
         neighborhood: string;
-        city: string;
-    }    
+    }
 }
