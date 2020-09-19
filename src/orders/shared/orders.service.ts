@@ -13,7 +13,11 @@ export class OrdersService {
     constructor(
         @InjectModel('Order') private readonly orderModel: Model<Order>,
         private usersService: UsersService
-    ) {}
+    ) { }
+
+    getById(id: string) {
+        return this.orderModel.findById(id).exec();
+    }
 
     private getAllOpenCloseQuery(open: boolean) {
         let query = this.orderModel.where('status');
@@ -53,7 +57,7 @@ export class OrdersService {
 
     async create(order: IOrderRequest) {
         const user = await this.usersService.getById(order.customer.id);
-        
+
         const createdOrder = new this.orderModel({
             ...order,
             number: this.generateNumber(),
@@ -63,7 +67,7 @@ export class OrdersService {
                 id: order.customer.id,
                 name: user.name,
                 phone: user.phone
-            }            
+            }
         });
 
         return await createdOrder.save();
@@ -81,7 +85,7 @@ export class OrdersService {
 
         let yesterday = new Date(today.valueOf());
         yesterday.setDate(yesterday.getUTCDate() - 1);
-        
+
         const openOrdersQuery = this.getAllOpenCloseQuery(true);
         const closeOrdersQuery = this.getAllOpenCloseQuery(false);
 
