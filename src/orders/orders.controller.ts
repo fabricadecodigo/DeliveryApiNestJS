@@ -22,6 +22,11 @@ export class OrdersController {
         }
     }
 
+    @Get(':id')
+    async getById(@Param('id') id): Promise<Order> {
+        return this.ordersService.getById(id);
+    }
+
     @Post()
     async create(@Body() order: IOrderRequest): Promise<Order> {
         return this.ordersService.create(order);

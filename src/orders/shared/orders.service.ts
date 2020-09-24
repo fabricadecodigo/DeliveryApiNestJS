@@ -15,6 +15,10 @@ export class OrdersService {
         private usersService: UsersService
     ) {}
 
+    getById(id: string) {
+        return this.orderModel.findById(id).exec();
+    }
+
     private getAllOpenCloseQuery(open: boolean) {
         let query = this.orderModel.where('status');
         if (open) {
