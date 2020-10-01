@@ -25,7 +25,7 @@ export class CardapioService {
     }
 
     private getPhotoUrl(filename: string) {
-        return `http://192.168.1.106:3000/${filename}`;
+        return `${process.env.APPLICATION_URL}/${filename}`;
     }
 
     async create(cardapio: Cardapio, file: Express.Multer.File) {
